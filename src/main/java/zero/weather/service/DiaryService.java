@@ -60,6 +60,11 @@ public class DiaryService {
         diaryRepository.save(nowDiary);
     }
 
+    // 원하는 날짜의 일기 삭제
+    public void deleteDiary(LocalDate date) {
+        diaryRepository.deleteAllByDate(date);
+    }
+
 
     // api를 요청 후 결과를 반환하는 메서드
     private String getWeatherString() {
