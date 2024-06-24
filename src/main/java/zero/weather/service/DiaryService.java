@@ -27,6 +27,7 @@ public class DiaryService {
     }
 
 
+    // 작성한 일기 저장
     public void createDiary(LocalDate date, String text) {
         String weatherData = getWeatherString();
 
@@ -42,6 +43,18 @@ public class DiaryService {
         diaryRepository.save(nowDiary);
     }
 
+    // 작성한 일기 조회
+    public List<Diary> readDiary(LocalDate date) {
+        return diaryRepository.findAllByDate(date);
+    }
+
+    // 구간별로 일기 조회
+    public List<Diary> readDiaries(LocalDate startDate, LocalDate endDate) {
+        return diaryRepository.findAllByDateBetween(startDate, endDate);
+    }
+
+
+    // api를 요청 후 결과를 반환하는 메서드
     private String getWeatherString() {
         String apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=seoul&appid=" + apiKey;
 
@@ -64,6 +77,8 @@ public class DiaryService {
         }
     }
 
+
+    // apiUrl으로 요청 후 결과값을 BufferedReader 형식으로 반환
     private static BufferedReader getBufferedReader(String apiUrl) throws IOException {
         URL url = new URL(apiUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -79,6 +94,8 @@ public class DiaryService {
         return br;
     }
 
+
+    // 매개값을 map으로 파싱 후 반환
     private Map<String, Object> parseWeather(String jsonString) {
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObject;
