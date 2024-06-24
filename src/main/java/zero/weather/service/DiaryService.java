@@ -48,6 +48,11 @@ public class DiaryService {
         return diaryRepository.findAllByDate(date);
     }
 
+    // 구간별로 일기 조회
+    public List<Diary> readDiaries(LocalDate startDate, LocalDate endDate) {
+        return diaryRepository.findAllByDateBetween(startDate, endDate);
+    }
+
 
     // api를 요청 후 결과를 반환하는 메서드
     private String getWeatherString() {
