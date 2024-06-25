@@ -35,5 +35,9 @@ out/
 
 ### VS Code ###
 .vscode/
-logs
-src/main/resources/application.properties
+# Logs
+logs/
+log_file.log
+
+# Application properties
+application.properties
