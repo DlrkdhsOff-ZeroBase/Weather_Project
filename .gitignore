@@ -40,4 +40,4 @@ logs/
 log_file.log
 
 # Application properties
-application.properties
+/src/main/resources/application.properties
