@@ -4,11 +4,14 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import zero.weather.WeatherApplication;
 import zero.weather.domain.DateWeather;
 import zero.weather.domain.Diary;
 import zero.weather.repository.DateWeatherRepository;
@@ -26,6 +29,8 @@ public class DiaryService {
     private final DiaryRepository diaryRepository;
 
     private final DateWeatherRepository dateWeatherRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(WeatherApplication.class);
 
     @Value("${openweathermap.key}")
     private String apiKey;
@@ -45,6 +50,8 @@ public class DiaryService {
     // 작성한 일기 저장
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public void createDiary(LocalDate date, String text) {
+        logger.info("started to create diary");
+
         DateWeather dateWeather = getDateWeather(date);
 
         Diary nowDiary = new Diary();
@@ -53,6 +60,7 @@ public class DiaryService {
         nowDiary.setDate(date);
 
         diaryRepository.save(nowDiary);
+        logger.info("end to create diary");
     }
 
     private DateWeather getWeatherFromApi() {
@@ -81,6 +89,7 @@ public class DiaryService {
     // 작성한 일기 조회
     @Transactional(readOnly = true)
     public List<Diary> readDiary(LocalDate date) {
+        logger.debug("read diary");
         return diaryRepository.findAllByDate(date);
     }
 
